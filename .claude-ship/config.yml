@@ -1,0 +1,13 @@
+# Claude Ship clone configuration (per repository)
+review_level: standard          # quick | standard | deep
+review_on: [opened, synchronize, reopened]
+steward:
+  enabled: true
+  max_attempts: 3
+  on: [check_failure, merge_conflict, review_feedback, mention]
+approvals:
+  enabled: true
+limits:
+  max_prompt_chars: 60000
+  max_findings: 20
+  max_tokens: 20000

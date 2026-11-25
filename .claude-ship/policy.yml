@@ -1,0 +1,17 @@
+# Approval policy. observe = comment only; enforce = submit a GitHub review.
+mode: observe
+review:
+  required: false
+rules:
+  - name: no-secrets-in-diff
+    when: diff_contains_pattern
+    pattern: "(api[_-]?key|secret|password|token)\s*[:=]\s*['\"][A-Za-z0-9]{12,}"
+    action: request_changes
+  - name: tiny-docs-only
+    when: paths_match
+    pattern: "(^|/)(docs|README|README\\.md)"
+    action: approve
+  - name: small-diff
+    when: diff_lines_less_than
+    value: 200
+    action: approve

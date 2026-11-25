@@ -1,0 +1,15 @@
+{
+  "name": "claude-ship-clone",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Functional open-source clone of Claude Ship: PR review, PR Steward and policy-based approvals.",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "review": "node scripts/review.mjs",
+    "steward": "node scripts/steward.mjs",
+    "approvals": "node scripts/approvals.mjs",
+    "ship": "node scripts/ship.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

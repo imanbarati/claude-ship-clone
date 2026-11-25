@@ -1,0 +1,42 @@
+name: PR Steward
+on:
+  workflow_run:
+    workflows: [CI, Code Review]
+    types: [completed]
+  issue_comment:
+    types: [created]
+  pull_request_review:
+    types: [submitted]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: read
+
+jobs:
+  steward:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'issue_comment' || github.event.issue.pull_request
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Resolve pull request number
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          number="${{ github.event.pull_request.number || github.event.issue.number }}"
+          if [ -z "$number" ] || [ "$number" = "0" ]; then
+            number=$(gh pr list --head "${{ github.event.workflow_run.head_branch }}" --state open --json number --jq '.[0].number' 2>/dev/null || true)
+          fi
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+      - name: Run PR Steward
+        if: steps.pr.outputs.number != '' && steps.pr.outputs.number != '0'
+        run: node scripts/steward.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LLM_MODEL: ${{ vars.LLM_MODEL || 'claude-sonnet-4-5' }}

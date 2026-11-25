@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Claude Ship — open-source clone</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="logo" href="/">Claude Ship <span>clone</span></a>
+    <nav aria-label="Sections">
+      <a href="#features">Features</a><a href="#setup">Setup</a><a href="#status">Status</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="kicker">Open pull request. Get back to building.</p>
+      <h1>Review, fix, and approve PRs automatically.</h1>
+      <p class="lede">A functional, dependency-free clone of the Claude Ship workflow: Code Review, PR Steward and policy-based Claude Approvals, running as GitHub Actions.</p>
+      <p class="actions"><a class="button" href="https://github.com/imanbarati/claude-ship-clone">View repository</a><a class="button ghost" href="#setup">Install in 4 steps</a></p>
+    </section>
+    <section id="features" class="features">
+      <article><h2>Code Review</h2><p>Multi-lens review with Quick, Standard and Deep levels. Findings are verified against added lines and posted inline on the PR.</p></article>
+      <article><h2>PR Steward</h2><p>Responds to failing CI, merge conflicts and feedback. Pushes fixes, explains every change and shows how to undo it.</p></article>
+      <article><h2>Claude Approvals</h2><p>A policy file decides approve, request-changes or comment-only. Starts in observe mode; enforce mode submits a GitHub review.</p></article>
+      <article><h2>/ship</h2><p>One local command commits, pushes, opens the PR and lets the agents take it from there.</p></article>
+    </section>
+    <section id="setup" class="setup">
+      <h2>Setup</h2>
+      <ol>
+        <li>Use this template or fork the repository.</li>
+        <li>Add <code>ANTHROPIC_API_KEY</code> as a repository secret (optional; a deterministic baseline reviewer runs without it).</li>
+        <li>Edit <code>.claude-ship/config.yml</code> and <code>.claude-ship/policy.yml</code>.</li>
+        <li>Open a pull request — the workflows run automatically.</li>
+      </ol>
+      <p class="note">Follow the guidance from Google Chrome's Modern Web Guidance: native semantics, container queries, view transitions, reduced-motion support and no framework runtime.</p>
+    </section>
+    <section id="status" class="status">
+      <h2>Repository status</h2>
+      <div id="status-grid" class="status-grid" aria-live="polite"><p>Loading GitHub status…</p></div>
+    </section>
+  </main>
+  <footer>Built from the public Claude Ship announcement. Not affiliated with Anthropic. Code Review and fixes may miss issues.</footer>
+</body>
+</html>

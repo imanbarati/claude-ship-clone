@@ -96,5 +96,10 @@ missing, the deploy step skips with a notice instead of failing the build.
 - Claude Approvals cannot bypass GitHub branch protection; add its check as a
   required review in repository settings when you trust the policy.
 
-Verification performed: all Node files pass `node --check`; `npm test` passes 9/9;
-the workflows and dashboard were pushed to GitHub and exercised with a real PR.
+Verification performed: all Node files pass `node --check`; `npm test` passes
+9/9. A real pull request ran all four workflows: CI passed, Code Review posted
+inline findings (credential literal and debug logging) on the demo PR, Claude
+Approvals posted a `request_changes` decision in observe mode, and PR Steward
+ran without unsafe changes. The three workflow bugs found by that live run
+(PR-action trigger, API patch parsing, noisy no-op steward runs) were fixed and
+re-verified.

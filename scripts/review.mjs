@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { context, prInfo, prFiles, postComment, submitReview } from './lib/github.mjs'
+import { context, gh, prInfo, prFiles, postComment, submitReview } from './lib/github.mjs'
 import { loadConfig } from './lib/config.mjs'
 import { parseDiff, diffLineCount } from './lib/diff.mjs'
 import { reviewDiff } from './lib/llm.mjs'
@@ -28,8 +28,12 @@ if (pr.draft) {
 }
 
 const files = prFiles(repo, prNumber)
-const diffText = files.map((file) => file.patch || '').filter(Boolean).join('\n')
+let diffText = files.map((file) => file.patch || '').filter(Boolean).join('\n')
+if (!diffText.trim()) {
+  try { diffText = gh(['pr', 'diff', String(prNumber)]) } catch { diffText = '' }
+}
 const parsed = parseDiff(diffText)
+console.log(`claude-ship review: ${files.length} file(s) from API, ${parsed.length} parsed, ${diffText.length} diff chars`)
 const findings = await reviewDiff(diffText, parsed, config.review_level, config.limits)
 
 const header = `## Claude Ship — ${config.review_level} review\n\n${findings.length} finding(s) across ${parsed.length} file(s), ${diffLineCount(parsed)} changed lines.\n`

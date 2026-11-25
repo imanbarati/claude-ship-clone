@@ -28,7 +28,7 @@ if (pr.draft) {
 }
 
 const files = prFiles(repo, prNumber)
-let diffText = files.map((file) => file.patch || '').filter(Boolean).join('\n')
+let diffText = files.map((file) => `diff --git a/${file.filename} b/${file.filename}\n--- a/${file.filename}\n+++ b/${file.filename}\n${file.patch || ''}`).join('\n')
 if (!diffText.trim()) {
   try { diffText = gh(['pr', 'diff', String(prNumber)]) } catch { diffText = '' }
 }

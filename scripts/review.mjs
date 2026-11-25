@@ -6,13 +6,14 @@ import { reviewDiff } from './lib/llm.mjs'
 
 const config = loadConfig()
 const { repo, prNumber, eventName, event } = context()
+const trigger = event.action || eventName
 
 if (!repo || !prNumber) {
   console.log('claude-ship review: no pull request in context; skipping.')
   process.exit(0)
 }
-if ((config.review_on || []).length && !config.review_on.includes(eventName)) {
-  console.log(`claude-ship review: event ${eventName} not configured; skipping.`)
+if ((config.review_on || []).length && !config.review_on.includes(trigger)) {
+  console.log(`claude-ship review: trigger ${trigger} not configured; skipping.`)
   process.exit(0)
 }
 

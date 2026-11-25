@@ -25,9 +25,10 @@ if (directive === 'stop') {
 const failures = failingChecks(repo, pr.head?.sha || '')
 const conflicted = pr.mergeable_state === 'dirty' || pr.mergeable === false
 const feedback = comments.filter((c) => String(c.body || '').includes('@claude')).length
+const failedWorkflow = eventName === 'workflow_run' && event.workflow_run?.conclusion === 'failure'
 const attempts = comments.filter((c) => String(c.body || '').includes('Claude Ship — PR Steward update')).length
 
-if (!failures.length && !conflicted && !feedback && eventName !== 'workflow_run') {
+if (!failures.length && !conflicted && !feedback && !failedWorkflow) {
   console.log('claude-ship steward: nothing to fix.')
   process.exit(0)
 }
